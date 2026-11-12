@@ -1,0 +1,9 @@
+[package]
+name = "fakeflixel"
+version = "0.1.0"
+edition = "2021"
+description = "A HaxeFlixel-inspired UI framework built on Bevy"
+
+[dependencies]
+bevy = "0.14"
+image = { version = "0.25", default-features = false, features = ["png"] }

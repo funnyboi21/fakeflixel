@@ -2,8 +2,14 @@
 name = "fakeflixel"
 version = "0.1.0"
 edition = "2021"
-description = "A HaxeFlixel-inspired UI framework built on Bevy"
+description = "A Flixel-inspired 2D game framework"
+
+[features]
+default = []
+bevy-ui = ["dep:bevy", "dep:image"]
+minifb = ["dep:minifb"]
 
 [dependencies]
-bevy = "0.14"
-image = { version = "0.25", default-features = false, features = ["png"] }
+bevy = { version = "0.14", optional = true }
+image = { version = "0.25", default-features = false, features = ["png"], optional = true }
+minifb = { version = "0.27", optional = true }

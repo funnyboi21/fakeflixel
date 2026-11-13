@@ -1,26 +1,53 @@
 # FakeFlixel
 
-FakeFlixel is a HaxeFlixel-inspired UI framework for Bevy 0.14. It provides
-buttons, check boxes, radio buttons, text inputs, dropdowns, panels, windows,
-shared focus and theme resources, and Flixel-style screen-coordinate helpers.
-
-Add it to a Bevy project with:
+FakeFlixel is a Flixel-inspired 2D game framework. Its default core owns the
+game/state API, screen-space math, input snapshots, assets, a software renderer,
+and a fixed-step update loop; it has no third-party dependencies and can be
+tested headlessly. Coordinates use a top-left origin with a 1280×720 default
+design resolution.
 
 ```toml
 [dependencies]
-fakeflixel = { git = "https://github.com/funnyboi21/fakeflixel" }
+fakeflixel = { git = "https://github.com/funnyboi21/fakeflixel", features = ["minifb"] }
 ```
-
-Register its plugin once:
 
 ```rust
-use bevy::prelude::*;
-use fakeflixel::FakeFlixelPlugin;
+use fakeflixel::{Color, Game, GameConfig, GameContext, Renderer, Sprite, State};
 
-App::new()
-    .add_plugins(DefaultPlugins)
-    .add_plugins(FakeFlixelPlugin);
+struct PlayState {
+    player: Sprite,
+}
+
+impl State for PlayState {
+    fn update(&mut self, context: &mut GameContext<'_>) {
+        if context.input().key_down(fakeflixel::KeyCode::Right) {
+            self.player.position.x += 120.0 * context.delta_seconds();
+        }
+    }
+
+    fn draw(&self, renderer: &mut dyn Renderer) {
+        renderer.clear(Color::BLACK);
+        renderer.draw_sprite(&self.player);
+    }
+}
+
+fn main() -> Result<(), Box<dyn std::error::Error>> {
+    Game::new(
+        GameConfig::default(),
+        PlayState {
+            player: Sprite::new(32.0, 32.0),
+        },
+    )?
+    .run()?;
+    Ok(())
+}
 ```
 
-The UI texture assets are embedded in the crate, so applications do not need
-to copy a separate asset directory.
+The optional `minifb` feature provides a small native window/input backend.
+The backend and the core are compiled into the game; players do not need a
+separate Bevy runtime. To keep using the existing Bevy 0.14 widgets during
+migration, enable `bevy-ui` and register `FakeFlixelPlugin` in a Bevy app.
+
+The current Bevy widgets remain a compatibility layer; their behavior and
+embedded textures are being replaced incrementally with framework-owned widget
+IDs and state.

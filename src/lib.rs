@@ -34,9 +34,10 @@ pub use ui::spawn::{
 pub use ui::{FakeFlixelUiPlugin, UiEvent, UiFocus};
 
 pub use core::{
-    AssetError, AssetId, AssetStore, AudioBackend, Backend, Camera, Color, FrameBuffer,
-    FrameBufferError, Game, GameConfig, GameContext, GameError, Group, ImageAsset, InputSnapshot,
-    KeyCode, MouseButton, Rect, Renderer, SoftwareRenderer, Sprite, State, Vec2, SCREEN_SIZE,
+    intersection, intersection_rects, overlaps, rects_overlap, AssetError, AssetId, AssetStore,
+    AudioBackend, Backend, Camera, Color, FrameBuffer, FrameBufferError, Game, GameConfig,
+    GameContext, GameError, Group, ImageAsset, InputSnapshot, KeyCode, MouseButton, Rect, Renderer,
+    SoftwareRenderer, Sprite, State, Vec2, SCREEN_SIZE,
 };
 #[cfg(feature = "minifb")]
 pub use minifb_backend::MinifbBackend;

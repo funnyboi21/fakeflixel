@@ -43,6 +43,23 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 }
 ```
 
+Sprites support axis-aligned overlap queries, including the intersection bounds
+for hit detection:
+
+```rust
+use fakeflixel::{intersection, overlaps, Sprite, Vec2};
+
+let mut player = Sprite::new(32.0, 32.0);
+player.position = Vec2::new(100.0, 100.0);
+let mut enemy = Sprite::new(24.0, 24.0);
+enemy.position = Vec2::new(120.0, 110.0);
+
+if overlaps(&player, &enemy) {
+    let hit_area = intersection(&player, &enemy).unwrap();
+    println!("hit area: {} by {}", hit_area.width(), hit_area.height());
+}
+```
+
 The optional `minifb` feature provides a small native window/input backend.
 The backend and the core are compiled into the game; players do not need a
 separate Bevy runtime. To keep using the existing Bevy 0.14 widgets during
